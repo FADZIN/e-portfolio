@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-10 rounded-xl shadow-sm border-t-4 border-blue-600 ">
+    
+    
+        <div class="flex flex-col items-center text-center mb-10">
+            <h1 class="mb-4 text-3xl font-bold text-gray-800 uppercase tracking-tight">Personal Information</h1>
+            <div onclick="openModal('/static/images/{{ personal.profile_pic }}', '{{ personal.full_name }}')" 
+                class="w-56 h-56 bg-gray-100 rounded-full overflow-hidden border-4 border-blue-50 shadow-md mb-6 cursor-pointer transform transition-transform duration-300 hover:scale-110">
+                <img src="/static/images/{{ personal.profile_pic }}" class="w-full h-full object-cover">
+            </div>
+            
+            
+            <div class="w-20 h-1 bg-blue-600 mt-2 rounded-full"></div>
+        </div>
+    
+    
+    <div class="space-y-8 max-w-xl mx-auto">
+        <div class="text-center">
+            <label class="text-xs font-bold text-blue-600 uppercase tracking-widest block mb-1">Full Name</label>
+            <p class="text-2xl font-semibold text-gray-900">{{ personal.full_name if personal else 'Not Set' }}</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-gray-100">
+            <div class="text-center md:text-center">
+                <label class=" text-xs font-bold text-blue-600 uppercase tracking-widest block mb-1">Email Address</label>
+                <p class="text-gray-700 font-medium">{{ personal.email if personal else 'Not Set' }}</p>
+            </div>
+            <div class="text-center md:text-center">
+                <label class="text-xs font-bold text-blue-600 uppercase tracking-widest block mb-1">Phone Number</label>
+                <p class="text-gray-700 font-medium">{{ personal.phone if personal else 'Not Set' }}</p>
+            </div>
+        </div>
+
+        <div class="text-center pt-4 pb-4 border-t border-gray-100">
+            <label class="text-xs font-bold text-blue-600 uppercase tracking-widest block mb-1">Location / Address</label>
+            <p class="text-gray-700 leading-relaxed whitespace-pre-line px-4">
+                {{ personal.address if personal else 'Not Set' }}
+            </p>
+        </div>
+    </div>
+
+    <div class="mb-10 text-center pt-4 border-t border-gray-100">
+        <label class="text-xs font-bold text-blue-600 uppercase tracking-widest block mb-2">About Me</label>
+        <p class="text-gray-700 leading-relaxed whitespace-pre-line px-4 text-justify md:text-lg">
+            {{ personal.about_me if personal }}
+        </p>
+    </div>
+
+    {% if not personal %}
+    <div class="mt-12 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-center">
+        <p class="text-yellow-700 text-sm">No personal information found. <a href="/admin" class="font-bold underline">Go to Admin</a> to set up your profile.</p>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-10 rounded-xl shadow-sm border-t-4 border-purple-600">
+    <h1 class="text-3xl font-bold mb-8"> References</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {% for ref in references %}
+        <div class="p-8 bg-purple-50 rounded-2xl border border-purple-100">
+            <p class="text-2xl font-black text-purple-900 mb-2">{{ ref.name }}</p>
+            <p class="text-lg font-bold text-purple-600 mb-4">{{ ref.relationship }}</p>
+            <div class="text-gray-600 space-y-1">
+                <p><strong>Contact:</strong> {{ ref.contact }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

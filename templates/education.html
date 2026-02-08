@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-10 rounded-xl shadow-sm border-t-4 border-blue-600">
+    <h1 class="text-3xl font-bold mb-6">Education</h1>
+    <div class="space-y-8">
+        {% for edu in education %}
+        <div>
+            <h3 class="text-xl font-bold">{{ edu.institution }}</h3>
+            <p class="text-blue-600 font-semibold">{{ edu.year }}</p>
+            <p class="text-gray-600 mt-2">{{ edu.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

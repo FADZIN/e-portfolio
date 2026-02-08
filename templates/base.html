@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    
+    </script>
+    <title>E-Portfolio</title>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; flex-direction: column; }
+            main { padding: 0 !important; margin: 0 !important; width: 100% !important; }
+            .report-container { border: none !important; box-shadow: none !important; width: 100% !important; max-width: 100% !important; }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex flex-col md:flex-row min-h-screen">
+    <div class="md:hidden bg-blue-900 text-white p-4 flex justify-between items-center shadow-lg no-print">
+        <h2 class="font-bold tracking-wider">E-PORTFOLIO</h2>
+        <button id="menu-toggle" class="p-2 focus:outline-none hover:bg-blue-800 rounded">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </div>
+
+    <nav id="sidebar" class="hidden md:flex flex-col w-full md:w-64 bg-white shadow-2xl h-screen sticky top-0 p-6 no-print transition-all duration-300">
+        <div class="mb-10 hidden md:block">
+            <h2 class="text-2xl font-black text-blue-900 tracking-tighter">E-PORTFOLIO</h2>
+            
+        </div>
+
+        <ul class="flex-1 space-y-2 text-sm font-semibold text-gray-600">
+            {% set active_class = "bg-blue-50 text-blue-600 border-r-4 border-blue-600" %}
+            {% set inactive_class = "hover:bg-blue-50 hover:text-blue-600 transition" %}
+
+            <li>
+                <a href="/" class="flex items-center p-3 rounded-lg {{ active_class if request.url.path == '/' else inactive_class }}">
+                    Personal Info
+                </a>
+            </li>
+            <li>
+                <a href="/objective" class="flex items-center p-3 rounded-lg {{ active_class if request.url.path == '/objective' else inactive_class }}">
+                    Objective
+                </a>
+            </li>
+            <li>
+                <a href="/education" class="flex items-center p-3 rounded-lg {{ active_class if request.url.path == '/education' else inactive_class }}">
+                    Education
+                </a>
+            </li>
+            <li>
+                <a href="/experience" class="flex items-center p-3 rounded-lg {{ active_class if request.url.path == '/experience' else inactive_class }}">
+                    Experience
+                </a>
+            </li>
+            <li>
+                <a href="/awards" class="flex items-center p-3 rounded-lg {{ active_class if request.url.path == '/awards' else inactive_class }}">
+                    Awards
+                </a>
+            </li>
+            <li>
+                <a href="/skills" class="flex items-center p-3 rounded-lg {{ active_class if request.url.path == '/skills' else inactive_class }}">
+                    Skills
+                </a>
+            </li>
+            <li>
+                <a href="/references" class="flex items-center p-3 rounded-lg {{ active_class if request.url.path == '/references' else inactive_class }}">
+                    References
+                </a>
+            </li>
+        </ul>
+
+        <div class="pt-6 border-t border-gray-100 space-y-3">
+            <a href="/report" class="block w-full bg-gray-800 text-white text-center py-2.5 rounded-xl font-bold text-xs hover:bg-black transition shadow-lg">
+                PRINT CV REPORT
+            </a>
+            <a href="/admin" class="block w-full bg-blue-600 text-white text-center py-2.5 rounded-xl font-bold text-xs hover:bg-blue-700 transition shadow-md">
+                ADMIN 
+            </a>
+        </div>
+    </nav>
+
+    <main class="flex-1 p-6 md:p-16 bg-gray-50">
+        <div class="max-w-5xl mx-auto" data-aos="fade-down" data-aos-duration="1000">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    <div id="imageModal" 
+     class="fixed inset-0 z-[1000] hidden bg-black/90 backdrop-blur-md flex items-center justify-center no-print" 
+     onclick="closeModal()"> <div class="relative flex flex-col items-center justify-center w-full h-full p-4">
+        
+        <div class="bg-white p-2 rounded-2xl shadow-2xl flex flex-col items-center max-h-[90vh] cursor-default" 
+             onclick="event.stopPropagation()">
+            
+            <img id="modalImg" src="" class="rounded-xl object-contain max-h-[75vh] w-auto shadow-inner">
+            
+            <div class="py-4 text-center">
+                <p id="modalName" class="text-xs font-bold text-gray-800 uppercase tracking-widest"></p>                
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        function openModal(imgSrc, name) {
+            const modal = document.getElementById('imageModal');
+            document.getElementById('modalImg').src = imgSrc;
+            document.getElementById('modalName').innerText = name;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex'); // Force flex to ensure centering
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 1000, // Makes the slide take 1 full second
+                once: true,     // Animation plays once per page refresh
+                easing: 'ease-out-back', // Adds a slight "bounce" or smooth stop at the bottom
+                offset: 0       // Triggers immediately when the page loads
+            });
+        });
+
+        const btn = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        btn.addEventListener('click', () => {
+            // We toggle 'hidden' for mobile view
+            sidebar.classList.toggle('hidden');
+            // We ensure 'flex' is active when not hidden
+            if(!sidebar.classList.contains('hidden')) {
+                sidebar.classList.add('flex');
+            }
+        });
+
+        
+    </script>
+</body>
+</html>

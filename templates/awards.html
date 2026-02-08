@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-10 rounded-xl shadow-sm border-t-4 border-yellow-500">
+    <h1 class="text-3xl font-bold mb-8"> Awards & Honours</h1>
+    <div class="grid grid-cols-1 gap-4">
+        {% for award in awards %}
+        <div class="flex justify-between items-center p-6 bg-yellow-50 rounded-lg border border-yellow-100">
+            <span class="text-lg font-semibold text-yellow-800">🏆 {{ award.title }}</span>
+            <span class="bg-yellow-200 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold">{{ award.year }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
