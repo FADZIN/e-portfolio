@@ -1,10 +1,15 @@
+import os
 import certifi
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-# Gunakan Connection String TiDB anda di sini
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://HTMXbv8inEVYUPx.root:OkWgShAjYRS49S1p@gateway01.ap-southeast-1.prod.aws.tidbcloud.com:4000/test?ssl_ca=" + certifi.where()
+# Render akan secara automatik ambil nilai DATABASE_URL yang anda set tadi
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
+
+# Jika anda mahu test secara lokal, anda boleh letak pautan backup di sini
+if not SQLALCHEMY_DATABASE_URL:
+    SQLALCHEMY_DATABASE_URL = "mysql+pymysql://user:pass@localhost/e_portfolio"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
