@@ -1,216 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <title>Master Admin Dashboard</title>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        html{
-            scroll-behavior: smooth;
-        }
+        body { font-family: 'Inter', sans-serif; }
+        html { scroll-behavior: smooth; }
+        .sidebar-link:hover i { transform: translateX(3px); transition: all 0.3s; }
     </style>
 </head>
-<body class="bg-gray-100 flex">
-    <div class="w-64 bg-blue-900 min-h-screen text-white p-6 fixed">
-        <h1 class="text-2xl font-bold mb-8">Admin Panel</h1>
-        <nav class="space-y-4 text-sm">
-            <a href="/" class="block hover:text-blue-300">View Website</a>
-            <div class="pt-4 border-t border-blue-800">
-                <a href="#personal" class="block hover:text-blue-300 py-1">Personal Info</a>
-                <a href="#education" class="block hover:text-blue-300 py-1">Education</a>
-                <a href="#experience" class="block hover:text-blue-300 py-1">Experience</a>
-                <a href="#awards" class="block hover:text-blue-300 py-1">Awards</a>
-                <a href="#skills" class="block hover:text-blue-300 py-1">Skills</a>
-                <a href="#references" class="block hover:text-blue-300 py-1">References</a>
+<body class="bg-gray-50 flex">
+    <div class="w-64 bg-slate-900 min-h-screen text-white p-6 fixed shadow-2xl z-50">
+        <div class="flex items-center mb-10">
+            <div class="bg-blue-600 p-2 rounded-lg mr-3">
+                <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
+            </div>
+            <h1 class="text-xl font-black tracking-tighter uppercase">Admin Panel</h1>
+        </div>
+        
+        <nav class="space-y-1 text-sm">
+            <a href="/" class="sidebar-link flex items-center text-slate-400 hover:text-white py-2 transition">
+                <i data-lucide="external-link" class="w-4 h-4 mr-3 text-blue-500"></i> View Website
+            </a>
+            <div class="pt-6 pb-2">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Management</p>
+                <a href="#personal" class="sidebar-link flex items-center py-2.5 px-3 rounded-lg hover:bg-slate-800 transition">
+                    <i data-lucide="user" class="w-4 h-4 mr-3"></i> Personal Info
+                </a>
+                <a href="#education" class="sidebar-link flex items-center py-2.5 px-3 rounded-lg hover:bg-slate-800 transition">
+                    <i data-lucide="graduation-cap" class="w-4 h-4 mr-3"></i> Education
+                </a>
+                <a href="#experience" class="sidebar-link flex items-center py-2.5 px-3 rounded-lg hover:bg-slate-800 transition">
+                    <i data-lucide="briefcase" class="w-4 h-4 mr-3"></i> Experience
+                </a>
+                <a href="#awards" class="sidebar-link flex items-center py-2.5 px-3 rounded-lg hover:bg-slate-800 transition">
+                    <i data-lucide="trophy" class="w-4 h-4 mr-3"></i> Awards
+                </a>
+                <a href="#skills" class="sidebar-link flex items-center py-2.5 px-3 rounded-lg hover:bg-slate-800 transition">
+                    <i data-lucide="code-2" class="w-4 h-4 mr-3"></i> Skills
+                </a>
+                <a href="#references" class="sidebar-link flex items-center py-2.5 px-3 rounded-lg hover:bg-slate-800 transition">
+                    <i data-lucide="users" class="w-4 h-4 mr-3"></i> References
+                </a>
             </div>
             
             <div class="pt-10">
-                <a href="/logout" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded transition">
-                    Logout
+                <a href="/logout" class="flex items-center justify-center bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white font-bold py-3 rounded-xl transition duration-300">
+                    <i data-lucide="log-out" class="w-4 h-4 mr-2"></i> Logout
                 </a>
             </div>
         </nav>
     </div>
 
-    <main class="ml-64 p-10 w-full">
-        <section id="personal" class="bg-white p-6 rounded shadow mb-8">
-            <h2 class="text-xl font-bold mb-4 border-b">Personal Info & Objective</h2>
-            <form action="/admin/personal/update" method="post" enctype="multipart/form-data" class="grid grid-cols-2 gap-4">
-                <div class="col-span-2">
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Profile Picture</label>
-                    <input type="file" name="profile_pic" class="w-full border p-2 rounded text-sm">
-                </div>
-                <input type="text" name="name" value="{{ personal.full_name if personal }}" class="border p-2 rounded" placeholder="Full Name">
-                <input type="text" name="email" value="{{ personal.email if personal }}" class="border p-2 rounded" placeholder="Email">
-                <textarea name="obj" class="col-span-2 border p-2 rounded" placeholder="Objective">{{ personal.objective if personal }}</textarea>
-                <input type="text" name="phone" value="{{ personal.phone if personal }}" class="border p-2 rounded" placeholder="Phone">
-                <input type="text" name="address" value="{{ personal.address if personal }}" class="border p-2 rounded" placeholder="Address">
-                <div class="col-span-2">
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">About Me </label>
-                    <textarea name="about_me" class="w-full border p-2 rounded" rows="4" placeholder="Tell us about yourself...">{{ personal.about_me if personal }}</textarea>
-                </div>
-                <button type="submit" class="col-span-2 bg-blue-600 text-white py-2 rounded">Update Personal Info</button>
-            </form>
-        </section>
-        
-        <section id="education" class="bg-white p-6 rounded shadow mb-8">
-            <h2 class="text-xl font-bold mb-4 border-b">Manage Education</h2>
-            <form action="/admin/education/add" method="post" class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-6">
-                <input type="text" name="institution" placeholder="Institution" class="border p-2 rounded" required>
-                <input type="text" name="year" placeholder="Year (e.g., 2022-2026)" class="border p-2 rounded" required>
-                <input type="text" name="description" placeholder="Education" class="border p-2 rounded" required>
-                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded md:col-span-3">Add Education</button>
-            </form>
-
-            {% for edu in education %}
-            <div class="border-t py-3">
-                <div class="flex justify-between items-center">
-                    <span><strong>{{ edu.institution }}</strong> ({{ edu.year }})</span>
-                    <div class="space-x-3">
-                        <button onclick="document.getElementById('edit-edu-{{ edu.id }}').classList.toggle('hidden')" class="text-blue-600 font-bold">Edit</button>
-                        <a href="/admin/education/delete/{{ edu.id }}" class="text-red-600 font-bold">Delete</a>
-                    </div>
-                </div>
-                <form id="edit-edu-{{ edu.id }}" action="/admin/education/update/{{ edu.id }}" method="post" class="hidden mt-4 bg-gray-50 p-4 rounded grid grid-cols-1 gap-2">
-                    <input type="text" name="institution" value="{{ edu.institution }}" class="border p-2 rounded">
-                    <input type="text" name="year" value="{{ edu.year }}" class="border p-2 rounded">
-                    <input type="text" name="description" value="{{ edu.description }}" class="border p-2 rounded">
-                    <button type="submit" class="bg-blue-600 text-white py-2 rounded">Update Education</button>
-                </form>
+    <main class="ml-64 p-10 w-full">    
+        <section id="personal" class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+            <div class="flex items-center mb-6">
+                <i data-lucide="user-circle" class="w-6 h-6 text-blue-600 mr-2"></i>
+                <h2 class="text-xl font-bold text-gray-800 uppercase tracking-tight">Personal Profile</h2>
             </div>
-            {% endfor %}
+            <form action="/admin/personal/update" method="post" enctype="multipart/form-data" class="grid grid-cols-2 gap-6">
+                <div class="col-span-2 bg-gray-50 p-6 rounded-xl border-2 border-dashed border-gray-200 text-center">
+                    <i data-lucide="image" class="w-8 h-8 text-gray-400 mx-auto mb-2"></i>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Update Profile Picture</label>
+                    <input type="file" name="profile_pic" class="text-sm mx-auto">
+                </div>
+                
+                <div class="relative">
+                    <i data-lucide="user" class="absolute left-3 top-3 w-4 h-4 text-gray-400"></i>
+                    <input type="text" name="name" value="{{ personal.full_name if personal }}" class="pl-10 w-full border border-gray-200 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Full Name">
+                </div>
+                <div class="relative">
+                    <i data-lucide="mail" class="absolute left-3 top-3 w-4 h-4 text-gray-400"></i>
+                    <input type="text" name="email" value="{{ personal.email if personal }}" class="pl-10 w-full border border-gray-200 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Email">
+                </div>
+                
+                <div class="col-span-2 relative">
+                    <i data-lucide="target" class="absolute left-3 top-3 w-4 h-4 text-gray-400"></i>
+                    <textarea name="obj" class="pl-10 w-full border border-gray-200 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Career Objective">{{ personal.objective if personal }}</textarea>
+                </div>
+                
+                <div class="relative">
+                    <i data-lucide="phone" class="absolute left-3 top-3 w-4 h-4 text-gray-400"></i>
+                    <input type="text" name="phone" value="{{ personal.phone if personal }}" class="pl-10 w-full border border-gray-200 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Phone">
+                </div>
+                <div class="relative">
+                    <i data-lucide="map-pin" class="absolute left-3 top-3 w-4 h-4 text-gray-400"></i>
+                    <input type="text" name="address" value="{{ personal.address if personal }}" class="pl-10 w-full border border-gray-200 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Address">
+                </div>
+                
+                <div class="col-span-2">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">About Me Description</label>
+                    <textarea name="about_me" class="w-full border border-gray-200 p-4 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" rows="4">{{ personal.about_me if personal }}</textarea>
+                </div>
+                <button type="submit" class="col-span-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-200 transition duration-300">
+                    <i data-lucide="save" class="w-4 h-4 inline mr-2"></i> Update Profile
+                </button>
+            </form>
         </section>
 
-        <section id="experience" class="bg-white p-6 rounded shadow mb-8">
-            <h2 class="text-xl font-bold mb-4 border-b">Manage Experience</h2>
-            <form action="/admin/experience/add" method="post" class="grid grid-cols-1 gap-4 mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-                    <input type="text" name="company" placeholder="Company" class="border p-2 rounded" required>
-                    <input type="text" name="position" placeholder="Position" class="border p-2 rounded" required>
-                    <input type="text" name="duration" placeholder="Duration" class="border p-2 rounded" required>
+        <section id="education" class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <i data-lucide="graduation-cap" class="w-6 h-6 text-emerald-600 mr-2"></i>
+                    <h2 class="text-xl font-bold text-gray-800 uppercase tracking-tight">Education</h2>
                 </div>
-                <textarea name="description" placeholder="Describe your responsibilities..." class="border p-2 rounded w-full" rows="3"></textarea>
-                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded font-bold hover:bg-green-700 transition">Add Experience</button>
+            </div>
+            
+            <form action="/admin/education/add" method="post" class="bg-slate-50 p-6 rounded-xl grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <input type="text" name="institution" placeholder="Institution" class="border p-2.5 rounded-lg" required>
+                <input type="text" name="year" placeholder="Year" class="border p-2.5 rounded-lg" required>
+                <input type="text" name="description" placeholder="Course" class="border p-2.5 rounded-lg" required>
+                <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg md:col-span-3 transition shadow-md">
+                    <i data-lucide="plus" class="w-4 h-4 inline mr-1"></i> Add Education Record
+                </button>
+            </form>
+
+            <div class="space-y-4">
+                {% for edu in education %}
+                <div class="group border border-gray-100 p-5 rounded-xl hover:bg-gray-50 transition">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-gray-800">{{ edu.institution }}</p>
+                            <p class="text-xs text-blue-600 font-bold uppercase tracking-wider">{{ edu.year }}</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="document.getElementById('edit-edu-{{ edu.id }}').classList.toggle('hidden')" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition">
+                                <i data-lucide="pencil" class="w-4 h-4"></i>
+                            </button>
+                            <a href="/admin/education/delete/{{ edu.id }}" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" onclick="return confirm('Delete this record?')">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <form id="edit-edu-{{ edu.id }}" action="/admin/education/update/{{ edu.id }}" method="post" class="hidden mt-6 bg-white border p-4 rounded-xl grid gap-3 shadow-inner">
+                        <input type="text" name="institution" value="{{ edu.institution }}" class="border p-2 rounded-lg text-sm">
+                        <input type="text" name="year" value="{{ edu.year }}" class="border p-2 rounded-lg text-sm">
+                        <input type="text" name="description" value="{{ edu.description }}" class="border p-2 rounded-lg text-sm">
+                        <button type="submit" class="bg-blue-600 text-white py-2 rounded-lg font-bold text-sm">Save Changes</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="experience" class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+            <div class="flex items-center mb-6">
+                <i data-lucide="briefcase" class="w-6 h-6 text-amber-600 mr-2"></i>
+                <h2 class="text-xl font-bold text-gray-800 uppercase tracking-tight">Work Experience</h2>
+            </div>
+            <form action="/admin/experience/add" method="post" class="grid grid-cols-1 gap-4 mb-10 bg-slate-50 p-6 rounded-xl border border-slate-100">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <input type="text" name="company" placeholder="Company Name" class="border p-2.5 rounded-lg" required>
+                    <input type="text" name="position" placeholder="Job Title" class="border p-2.5 rounded-lg" required>
+                    <input type="text" name="duration" placeholder="Duration" class="border p-2.5 rounded-lg" required>
+                </div>
+                <textarea name="description" placeholder="Describe your responsibilities..." class="border p-2.5 rounded-lg w-full" rows="3"></textarea>
+                <button type="submit" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-xl transition shadow-lg flex items-center justify-center">
+                    <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i> Add Experience
+                </button>
             </form>
 
             {% for exp in experience %}
-            <div class="border-t py-4">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <p class="font-bold text-lg">{{ exp.position }} <span class="text-gray-500 text-sm">at {{ exp.company }}</span></p>
-                        <p class="text-gray-600 text-sm whitespace-pre-line">{{ exp.description }}</p>
+            <div class="border-b border-gray-100 py-6 last:border-0">
+                <div class="flex justify-between items-start">
+                    <div class="max-w-2xl">
+                        <h3 class="font-bold text-lg text-gray-800">{{ exp.position }}</h3>
+                        <p class="text-amber-600 font-bold text-sm mb-3">at {{ exp.company }} — {{ exp.duration }}</p>
+                        <p class="text-gray-600 text-sm leading-relaxed">{{ exp.description }}</p>
                     </div>
-                    <div class="space-x-3">
-                        <button onclick="document.getElementById('edit-exp-{{ exp.id }}').classList.toggle('hidden')" class="text-blue-600 font-bold">Edit</button>
-                        <a href="/admin/experience/delete/{{ exp.id }}" class="text-red-600 font-bold">Delete</a>
+                    <div class="flex space-x-2">
+                        <button onclick="document.getElementById('edit-exp-{{ exp.id }}').classList.toggle('hidden')" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg">
+                            <i data-lucide="pencil" class="w-4 h-4"></i>
+                        </button>
+                        <a href="/admin/experience/delete/{{ exp.id }}" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </a>
                     </div>
                 </div>
-                <form id="edit-exp-{{ exp.id }}" action="/admin/experience/update/{{ exp.id }}" method="post" class="hidden mt-4 bg-gray-50 p-4 rounded grid grid-cols-1 gap-4">
-                    <div class="grid grid-cols-3 gap-2">
-                        <input type="text" name="company" value="{{ exp.company }}" class="border p-2 rounded">
-                        <input type="text" name="position" value="{{ exp.position }}" class="border p-2 rounded">
-                        <input type="text" name="duration" value="{{ exp.duration }}" class="border p-2 rounded">
+                <form id="edit-exp-{{ exp.id }}" action="/admin/experience/update/{{ exp.id }}" method="post" class="hidden mt-6 bg-slate-50 p-6 rounded-xl border border-gray-200 grid gap-4">
+                    <div class="grid grid-cols-3 gap-3">
+                        <input type="text" name="company" value="{{ exp.company }}" class="border p-2.5 rounded-lg text-sm font-semibold">
+                        <input type="text" name="position" value="{{ exp.position }}" class="border p-2.5 rounded-lg text-sm font-semibold">
+                        <input type="text" name="duration" value="{{ exp.duration }}" class="border p-2.5 rounded-lg text-sm font-semibold">
                     </div>
-                    <textarea name="description" class="border p-2 rounded w-full" rows="3">{{ exp.description }}</textarea>
-                    <button type="submit" class="bg-blue-600 text-white py-2 rounded font-bold">Update Experience</button>
+                    <textarea name="description" class="border p-2.5 rounded-lg w-full text-sm" rows="3">{{ exp.description }}</textarea>
+                    <button type="submit" class="bg-blue-600 text-white py-2.5 rounded-xl font-bold shadow-md">Update Experience</button>
                 </form>
             </div>
             {% endfor %}
         </section>
 
-        <section id="awards" class="bg-white p-6 rounded shadow mb-8">
-            <h2 class="text-xl font-bold mb-4 border-b">Manage Awards</h2>
-            <form action="/admin/award/add" method="post" class="flex gap-2 mb-6">
-                <input type="text" name="title" placeholder="Award Title" class="border p-2 flex-1 rounded" required>
-                <input type="text" name="year" placeholder="Year" class="border p-2 w-32 rounded" required>
-                <button type="submit" class="bg-green-600 text-white px-4 rounded">Add</button>
+        <section id="awards" class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+            <div class="flex items-center mb-6">
+                <i data-lucide="award" class="w-6 h-6 text-yellow-600 mr-2"></i>
+                <h2 class="text-xl font-bold text-gray-800 uppercase tracking-tight">Awards & Honours</h2>
+            </div>
+            <form action="/admin/award/add" method="post" class="flex gap-3 mb-8 bg-yellow-50 p-4 rounded-xl border border-yellow-100">
+                <input type="text" name="title" placeholder="Award Title" class="border p-2.5 flex-1 rounded-lg" required>
+                <input type="text" name="year" placeholder="Year" class="border p-2.5 w-32 rounded-lg" required>
+                <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 rounded-lg font-bold">Add</button>
             </form>
 
-            {% for award in awards %}
-            <div class="border-t py-3">
-                <div class="flex justify-between items-center">
-                    <span><strong>{{ award.title }}</strong> ({{ award.year }})</span>
-                    <div class="space-x-3">
-                        <button onclick="document.getElementById('edit-award-{{ award.id }}').classList.toggle('hidden')" class="text-blue-600 font-bold">Edit</button>
-                        <a href="/admin/award/delete/{{ award.id }}" class="text-red-600 font-bold">Delete</a>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for award in awards %}
+                <div class="p-4 border border-gray-100 rounded-xl flex justify-between items-center hover:shadow-sm transition">
+                    <div>
+                        <p class="font-bold text-gray-800">{{ award.title }}</p>
+                        <p class="text-xs font-bold text-yellow-600 uppercase">{{ award.year }}</p>
+                    </div>
+                    <div class="flex space-x-1">
+                        <button onclick="document.getElementById('edit-award-{{ award.id }}').classList.toggle('hidden')" class="p-2 text-slate-300 hover:text-blue-500 transition"><i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
+                        <a href="/admin/award/delete/{{ award.id }}" class="p-2 text-slate-300 hover:text-red-500 transition"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></a>
                     </div>
                 </div>
-                <form id="edit-award-{{ award.id }}" action="/admin/award/update/{{ award.id }}" method="post" class="hidden mt-2 flex gap-2">
-                    <input type="text" name="title" value="{{ award.title }}" class="border p-1 rounded flex-1">
-                    <input type="text" name="year" value="{{ award.year }}" class="border p-1 rounded w-24">
-                    <button type="submit" class="bg-blue-500 text-white px-2 rounded">Save</button>
+                <form id="edit-award-{{ award.id }}" action="/admin/award/update/{{ award.id }}" method="post" class="hidden col-span-2 mt-2 bg-gray-50 p-3 rounded-lg flex gap-3">
+                    <input type="text" name="title" value="{{ award.title }}" class="border p-2 rounded-lg flex-1 text-xs">
+                    <input type="text" name="year" value="{{ award.year }}" class="border p-2 rounded-lg w-24 text-xs">
+                    <button type="submit" class="bg-blue-600 text-white px-4 rounded-lg text-xs font-bold">Save</button>
                 </form>
+                {% endfor %}
             </div>
-            {% endfor %}
         </section>
 
-        <section id="skills" class="bg-white p-6 rounded shadow mb-8">
-            <h2 class="text-xl font-bold mb-4 border-b">Manage Skills</h2>
-            <form action="/admin/skill/add" method="post" class="flex gap-2 mb-6">
-                <input type="text" name="name" placeholder="Skill " class="border p-2 flex-1 rounded" required>
-                <select name="level" class="border p-2 w-48 rounded bg-white" required>
-                    <option value="" disabled selected>Select Level</option>
+        <section id="skills" class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+            <div class="flex items-center mb-6">
+                <i data-lucide="code" class="w-6 h-6 text-indigo-600 mr-2"></i>
+                <h2 class="text-xl font-bold text-gray-800 uppercase tracking-tight">Skills</h2>
+            </div>
+            <form action="/admin/skill/add" method="post" class="flex flex-wrap gap-3 mb-8 bg-indigo-50 p-6 rounded-xl border border-indigo-100">
+                <input type="text" name="name" placeholder="Skill Name " class="border p-2.5 flex-1 min-w-[200px] rounded-lg" required>
+                <select name="level" class="border p-2.5 w-48 rounded-lg bg-white font-bold text-slate-600" required>
+                    <option value="" disabled selected>Proficiency Level</option>
                     <option value="Beginner">Beginner</option>
                     <option value="Intermediate">Intermediate</option>
                     <option value="Advanced">Advanced</option>
                     <option value="Expert">Expert</option>
                 </select>
-                <button type="submit" class="bg-green-600 text-white px-4 rounded font-bold">Add</button>
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 rounded-lg font-bold shadow-md shadow-indigo-100">Add Skill</button>
             </form>
 
-            {% for skill in skills %}
-            <div class="border-t py-3">
-                <div class="flex justify-between items-center">
-                    <span><strong>{{ skill.name }}</strong> — <span class="text-blue-600 font-semibold">{{ skill.level }}</span></span>
-                    <div class="space-x-3">
-                        <button onclick="document.getElementById('edit-skill-{{ skill.id }}').classList.toggle('hidden')" class="text-blue-600 font-bold">Edit</button>
-                        <a href="/admin/skill/delete/{{ skill.id }}" class="text-red-600 font-bold">Delete</a>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {% for skill in skills %}
+                <div class="border border-gray-100 p-4 rounded-xl hover:bg-slate-50 transition">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-gray-800">{{ skill.name }}</span>
+                        <div class="flex space-x-1">
+                            <button onclick="document.getElementById('edit-skill-{{ skill.id }}').classList.toggle('hidden')" class="p-1.5 text-slate-300 hover:text-blue-500"><i data-lucide="pencil" class="w-3 h-3"></i></button>
+                            <a href="/admin/skill/delete/{{ skill.id }}" class="p-1.5 text-slate-300 hover:text-red-500"><i data-lucide="trash-2" class="w-3 h-3"></i></a>
+                        </div>
                     </div>
+                    <div class="mt-2 text-[10px] font-black uppercase tracking-tighter text-indigo-500">{{ skill.level }}</div>
+                    
+                    <form id="edit-skill-{{ skill.id }}" action="/admin/skill/update/{{ skill.id }}" method="post" class="hidden mt-4 pt-4 border-t border-gray-200 grid gap-2">
+                        <input type="text" name="name" value="{{ skill.name }}" class="border p-2 rounded-lg text-xs font-bold">
+                        <select name="level" class="border p-2 rounded-lg text-xs bg-white font-bold">
+                            <option value="Beginner" {% if skill.level == 'Beginner' %}selected{% endif %}>Beginner</option>
+                            <option value="Intermediate" {% if skill.level == 'Intermediate' %}selected{% endif %}>Intermediate</option>
+                            <option value="Advanced" {% if skill.level == 'Advanced' %}selected{% endif %}>Advanced</option>
+                            <option value="Expert" {% if skill.level == 'Expert' %}selected{% endif %}>Expert</option>
+                        </select>
+                        <button type="submit" class="bg-blue-600 text-white py-1.5 rounded-lg text-[10px] font-black uppercase">Update</button>
+                    </form>
                 </div>
-                <form id="edit-skill-{{ skill.id }}" action="/admin/skill/update/{{ skill.id }}" method="post" class="hidden mt-2 flex gap-2">
-                    <input type="text" name="name" value="{{ skill.name }}" class="border p-2 flex-1 rounded text-sm">
-                    <select name="level" class="border p-2 w-40 rounded text-sm bg-white">
-                        <option value="Beginner" {% if skill.level == 'Beginner' %}selected{% endif %}>Beginner</option>
-                        <option value="Intermediate" {% if skill.level == 'Intermediate' %}selected{% endif %}>Intermediate</option>
-                        <option value="Advanced" {% if skill.level == 'Advanced' %}selected{% endif %}>Advanced</option>
-                        <option value="Expert" {% if skill.level == 'Expert' %}selected{% endif %}>Expert</option>
-                    </select>
-                    <button type="submit" class="bg-blue-500 text-white px-4 rounded text-sm font-bold">Save</button>
-                </form>
+                {% endfor %}
             </div>
-            {% endfor %}
         </section>
         
-        <section id="references" class="bg-white p-6 rounded shadow mb-8">
-            <h2 class="text-xl font-bold mb-4 border-b">Manage References</h2>
-            <form action="/admin/reference/add" method="post" class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-6">
-                <input type="text" name="name" placeholder="Name" class="border p-2 rounded" required>
-                <input type="text" name="relationship" placeholder="Relationship" class="border p-2 rounded" required>
-                <input type="text" name="contact" placeholder="Contact Info" class="border p-2 rounded" required>
-                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded md:col-span-3">Add Reference</button>
+        <section id="references" class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+            <div class="flex items-center mb-6">
+                <i data-lucide="users" class="w-6 h-6 text-cyan-600 mr-2"></i>
+                <h2 class="text-xl font-bold text-gray-800 uppercase tracking-tight">Professional References</h2>
+            </div>
+            <form action="/admin/reference/add" method="post" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 bg-cyan-50 p-6 rounded-xl border border-cyan-100">
+                <input type="text" name="name" placeholder="Full Name" class="border p-2.5 rounded-lg" required>
+                <input type="text" name="relationship" placeholder="Relationship " class="border p-2.5 rounded-lg" required>
+                <input type="text" name="contact" placeholder="Email or Phone" class="border p-2.5 rounded-lg" required>
+                <button type="submit" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2.5 rounded-lg md:col-span-3 font-bold transition">Add Reference</button>
             </form>
 
-            {% for ref in references %}
-            <div class="border-t py-3">
-                <div class="flex justify-between items-center">
-                    <span><strong>{{ ref.name }}</strong> ({{ ref.relationship }})</span>
-                    <div class="space-x-3">
-                        <button onclick="document.getElementById('edit-ref-{{ ref.id }}').classList.toggle('hidden')" class="text-blue-600 font-bold">Edit</button>
-                        <a href="/admin/reference/delete/{{ ref.id }}" class="text-red-600 font-bold">Delete</a>
+            <div class="space-y-4">
+                {% for ref in references %}
+                <div class="flex justify-between items-center p-5 border border-gray-100 rounded-2xl">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-cyan-100 text-cyan-700 flex items-center justify-center rounded-full mr-4 font-bold text-xs">
+                            {{ ref.name[:1] }}
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">{{ ref.name }}</p>
+                            <p class="text-xs text-gray-500">{{ ref.relationship }} • {{ ref.contact }}</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="document.getElementById('edit-ref-{{ ref.id }}').classList.toggle('hidden')" class="p-2 text-slate-300 hover:text-blue-500 transition"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+                        <a href="/admin/reference/delete/{{ ref.id }}" class="p-2 text-slate-300 hover:text-red-500 transition" onclick="return confirm('Delete this reference?')"><i data-lucide="trash-2" class="w-4 h-4"></i></a>
                     </div>
                 </div>
-                <form id="edit-ref-{{ ref.id }}" action="/admin/reference/update/{{ ref.id }}" method="post" class="hidden mt-4 bg-gray-50 p-4 rounded grid grid-cols-1 gap-2">
-                    <input type="text" name="name" value="{{ ref.name }}" class="border p-2 rounded">
-                    <input type="text" name="relationship" value="{{ ref.relationship }}" class="border p-2 rounded">
-                    <input type="text" name="contact" value="{{ ref.contact }}" class="border p-2 rounded">
-                    <button type="submit" class="bg-blue-600 text-white py-2 rounded">Update Reference</button>
+                <form id="edit-ref-{{ ref.id }}" action="/admin/reference/update/{{ ref.id }}" method="post" class="hidden mt-4 bg-gray-50 p-6 rounded-xl border border-gray-200 grid grid-cols-1 gap-3 shadow-inner">
+                    <input type="text" name="name" value="{{ ref.name }}" class="border p-2.5 rounded-lg text-sm">
+                    <input type="text" name="relationship" value="{{ ref.relationship }}" class="border p-2.5 rounded-lg text-sm">
+                    <input type="text" name="contact" value="{{ ref.contact }}" class="border p-2.5 rounded-lg text-sm">
+                    <button type="submit" class="bg-blue-600 text-white py-2.5 rounded-xl font-bold">Update Reference Info</button>
                 </form>
+                {% endfor %}
             </div>
-            {% endfor %}
         </section>
-        </main>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
